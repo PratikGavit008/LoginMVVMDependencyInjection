@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Dependency {
+protocol DependencyProtocol {
     // Login
     func resolveLoginViewModel() -> LoginViewModelProtocol
     func resolveLoginViewController() -> LoginViewControllerProtocol
@@ -18,7 +18,7 @@ protocol Dependency {
 }
 
 
-class CoreDependency: Dependency {
+class CoreDependency: DependencyProtocol {
     //Login
     func resolveLoginViewModel() -> LoginViewModelProtocol {
         return LoginViewModel()
@@ -39,7 +39,7 @@ class CoreDependency: Dependency {
 }
 
 struct DependencyInjector {
-    static var dependencies: Dependency = CoreDependency()
+    static var dependencies: DependencyProtocol = CoreDependency()
     private init() { }
 }
 
@@ -66,13 +66,13 @@ class AppDependency: CoreDependency {
 }
 
 protocol HasDependencies {
-    var dependencies: Dependency { get }
+    var dependencies: DependencyProtocol { get }
 }
 
 extension HasDependencies {
     
     /// Container for dependency instance factories
-    var dependencies: Dependency {
+    var dependencies: DependencyProtocol {
         return DependencyInjector.dependencies
     }
 }
